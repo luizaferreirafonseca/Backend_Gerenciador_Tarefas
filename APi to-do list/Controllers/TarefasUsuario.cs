@@ -1,7 +1,8 @@
 ﻿using APi_to_do_list.DTO;
 using APi_to_do_list.ENTITIES;
 using Microsoft.AspNetCore.Mvc;
-using APi_to_do_list.DTO; 
+using APi_to_do_list.DTO;
+using APi_to_do_list.DATA; 
 
 namespace APi_to_do_list.Controllers
 {
@@ -16,10 +17,28 @@ namespace APi_to_do_list.Controllers
         [HttpGet()]
         public List<Tarefa> PegarTarefas() 
         {
-            Usuario tarefas = new Usuario();
-            return tarefas.PegarTarefas();
+            Usuario user = Data.usuarios[0];
+            return user.PegarTarefas();
 
             
+        }
+
+
+
+        [HttpGet("{id}")]
+
+        public Tarefa PegarTarefaPeloId(Guid id)
+        {
+            try
+            {
+                Usuario user = Data.usuarios[0];
+                Tarefa tarefaEncontrada = user.PegarTarefaPeloId(id);
+                return tarefaEncontrada; 
+
+            } catch (Exception error)
+            {
+                throw new Exception(error.Message); 
+            }
         }
 
 
@@ -28,8 +47,8 @@ namespace APi_to_do_list.Controllers
         public List <Tarefa> CadastrarNovaTarefa([FromBody] TarefaDTO novaTarefa)
         {
 
-        Usuario tarefas = new Usuario();
-        List<Tarefa> tarefasAtualizadas = tarefas.CadastrarTarefa(novaTarefa);
+            Usuario user = Data.usuarios[0];
+        List<Tarefa> tarefasAtualizadas = user.CadastrarTarefa(novaTarefa);
 
 
         return tarefasAtualizadas; 
@@ -44,20 +63,30 @@ namespace APi_to_do_list.Controllers
         public Tarefa EditarTarefa(Guid id, [FromBody] TarefaDTO tarefaPraEditar)
         {
 
-            Usuario tarefa = new Usuario();
+            Usuario user = Data.usuarios[0];
 
-            Tarefa tarefaEditada = tarefa.EditarTarefa(id, tarefaPraEditar); 
+            Tarefa tarefaEditada = user.EditarTarefa(id, tarefaPraEditar); 
 
             return tarefaEditada;
         }
 
 
 
+        [HttpDelete("DeletarTarefa/{id}")]
+
+        public List<Tarefa> DeletarTarefa(Guid id)
+        {
+            Usuario user = Data.usuarios[0];
+
+            List<Tarefa> tarefasDepoisDoDelete = user.ExcluirTarefa(id);
+
+            return tarefasDepoisDoDelete; 
+
+        }
 
 
 
-
-
+        
 
 
     }

@@ -11,6 +11,12 @@
 
         public string Descricao { get; set; }
 
-
+        public TarefaDTO(string nomeTarefa, DateTime dataInicio, DateTime dataTermino, string descricao)
+        {
+            NomeTarefa = nomeTarefa;
+            DataInicio = dataInicio;
+            DataTermino = dataTermino;
+            Descricao = descricao;
+        }
     }
 }

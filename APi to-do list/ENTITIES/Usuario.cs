@@ -24,6 +24,9 @@ namespace APi_to_do_list.ENTITIES
 
         }
 
+
+        
+
         public Usuario(string nome, string login, string senha, Guid id)
         {
             Nome = nome;
@@ -34,9 +37,36 @@ namespace APi_to_do_list.ENTITIES
         }
 
 
+        public Usuario(string nome, string login, string senha, Guid id, List<Tarefa> tarefas)
+        {
+            Nome = nome; 
+            Login = login;
+            Senha = senha;
+            Id = id;
+            Tarefas = tarefas;
+           
+        }
+
+
+
+
         public List<Tarefa> PegarTarefas()
         {
             return Tarefas;
+        }
+
+
+        public Tarefa PegarTarefaPeloId(Guid id)
+        {
+            var tarefa = Tarefas.Find(tarefa => tarefa.Id == id);
+
+            if (tarefa == null)
+            {
+                throw new Exception($"O {id} não existe");
+            }
+            return tarefa;
+
+
         }
 
 
@@ -49,7 +79,7 @@ namespace APi_to_do_list.ENTITIES
         }
 
 
-
+        
 
 
         public Tarefa EditarTarefa(Guid id, TarefaDTO tarefaPraEditar)
@@ -71,29 +101,28 @@ namespace APi_to_do_list.ENTITIES
 
 
 
-        public Tarefa ExcluirTarefa(Tarefa tarefaExcluida) {
-            {
-                var tarefa = Tarefas.FirstOrDefault(t => t.Id == tarefaExcluida.Id);
-    
+        public List<Tarefa> ExcluirTarefa(Guid id)
+        {
+
+            var tarefa = Tarefas.Find(t => t.Id == id);
+
             if (tarefa == null)
-                {
-                    throw new Exception($"A tarefa com ID {tarefaExcluida.Id} não foi encontrada.");
-                }
-
-                Tarefas.Remove(tarefa);
-                return tarefa;
-
+            {
+                throw new Exception($"A tarefa com ID {id} não foi encontrada.");
             }
 
+            Tarefas.Remove(tarefa);
+            return Tarefas; 
 
 
         }
 
 
 
+
         public Tarefa MarcarTarefaRealizada(Tarefa tarefaRealizada)
         {
-            var tarefa = Tarefas.FirstOrDefault(t => t.Id == tarefaRealizada.Id);
+            var tarefa = Tarefas.Find(t => t.Id == tarefaRealizada.Id);
 
 
             if (tarefa == null)
@@ -108,6 +137,9 @@ namespace APi_to_do_list.ENTITIES
             return tarefa;
 
         }
+
+
+
 
 
 

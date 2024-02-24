@@ -17,6 +17,9 @@ namespace APi_to_do_list.ENTITIES
 
         public bool EstaCompleta { get; set; }
 
+        public string Status {  get; set; }
+
+
         public Tarefa(Guid id, string nomeTarefa, DateTime dataInicio, DateTime dataTermino, string descricao)
         {
             Id = id;
@@ -25,6 +28,7 @@ namespace APi_to_do_list.ENTITIES
             DataTermino = dataTermino;
             Descricao = descricao;
             EstaCompleta = false;
+            Status = PegarStatus(dataInicio, dataTermino, false); 
         }
 
 
@@ -35,7 +39,9 @@ namespace APi_to_do_list.ENTITIES
             DataInicio = novaTarefa.DataInicio;
             DataTermino = novaTarefa.DataTermino; 
             Descricao = novaTarefa.Descricao;
-    
+            Status = PegarStatus(DataInicio, DataTermino, false);
+           
+
         }
 
         public Tarefa(EditarTarefaDTO tarefaModificada, Guid id)
@@ -48,6 +54,34 @@ namespace APi_to_do_list.ENTITIES
 
         }
 
+
+
+        private string PegarStatus(DateTime dataInicio, DateTime dataTermino, bool estaCompleta)
+        {
+
+            DateTime dataAtual = DateTime.Now; 
+
+
+            if(estaCompleta == true)
+            {
+                return "Realizada";
+            }
+            if (dataAtual > dataTermino)
+            {
+                return "Em atraso"; 
+            }
+            if(dataInicio > dataAtual)
+            {
+                return "Pendente";
+            }
+            if(dataInicio <= dataAtual && dataAtual < dataTermino)
+            {
+                return "Em andamento";
+                            
+            }
+
+            return "Status inexistente"; 
+        }   
 
 
 
