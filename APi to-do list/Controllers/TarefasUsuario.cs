@@ -27,7 +27,7 @@ namespace APi_to_do_list.Controllers
 
         [HttpGet("{id}")]
 
-        public Tarefa PegarTarefaPeloId(Guid id)
+       public Tarefa PegarTarefaPeloId(Guid id)
         {
             try
             {

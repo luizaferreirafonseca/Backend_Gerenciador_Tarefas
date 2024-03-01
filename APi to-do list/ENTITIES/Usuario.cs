@@ -52,6 +52,7 @@ namespace APi_to_do_list.ENTITIES
 
         public List<Tarefa> PegarTarefas()
         {
+            var teste = Tarefas;
             return Tarefas;
         }
 
@@ -79,20 +80,21 @@ namespace APi_to_do_list.ENTITIES
         }
 
 
-        
+
 
 
         public Tarefa EditarTarefa(Guid id, TarefaDTO tarefaPraEditar)
         {
-            var tarefa = Tarefas.Find(tarefa => tarefa.Id == id);
-            if (tarefa == null)
+            var index = Tarefas.FindIndex(tarefa => tarefa.Id == id);
+            if (index < 0)
             {
                 throw new Exception($"Esse {id} não é válido");
             }
             else
             {
 
-                tarefa = new Tarefa(tarefaPraEditar);
+                var tarefa = new Tarefa(tarefaPraEditar, id);
+                Tarefas[index] = tarefa;
                 return tarefa;
 
             }
